@@ -1,5 +1,11 @@
 require('newrelic');
 /*eslint-env node*/
+var http = require('http');
+var url = require('url');
+var fs = require('fs');
+var xml = require('xml');
+
+
 
 //------------------------------------------------------------------------------
 // node.js starter application for Bluemix
@@ -32,6 +38,23 @@ app.get('/importantroute', (req, res) => {
   }
   res.status(200).send('App works fine!');
 });
+
+app.get('/chceck', (req, res) => {
+
+var filename = 'check.xml';
+
+  fs.readFile(filename, function(err, data) {
+    if (err) {
+      res.writeHead(404, {'Content-Type': 'text/xml'});
+      return res.end("404 Not Found");
+    }  
+    res.writeHead(200, {'Content-Type': 'text/xml'});
+    res.write(data);
+    return res.end();
+  });
+
+});
+
 
 app.get('/breakme', (req, res) => {
   broken = true;
